@@ -7,6 +7,7 @@ export const createTask = async (data: {
   description?: string;
   dueDate?: string;
   userId: number;
+  completed?: boolean;
 }): Promise<Task | { error: string }> => {
   if (!data.title) return { error: "El título es obligatorio" };
   return await prisma.task.create({
@@ -14,6 +15,7 @@ export const createTask = async (data: {
       title: data.title,
       description: data.description,
       dueDate: data.dueDate ? new Date(data.dueDate) : null,
+      completed: data.completed ?? false, // Se guarda el valor enviado o false por defecto
       user: { connect: { id: data.userId } }
     }
   });
@@ -38,6 +40,7 @@ export const updateTask = async (data: {
   description?: string;
   dueDate?: string;
   userId: number;
+  completed?: boolean;
 }): Promise<Task | { error: string }> => {
   const existing = await prisma.task.findFirst({
     where: { id: data.id, userId: data.userId }
@@ -48,7 +51,8 @@ export const updateTask = async (data: {
     data: {
       title: data.title,
       description: data.description,
-      dueDate: data.dueDate ? new Date(data.dueDate) : existing.dueDate
+      dueDate: data.dueDate ? new Date(data.dueDate) : existing.dueDate,
+      completed: data.completed !== undefined ? data.completed : existing.completed,
     }
   });
 };
