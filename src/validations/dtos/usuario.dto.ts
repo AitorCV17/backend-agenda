@@ -44,6 +44,7 @@ export class CreateUserDto {
   @IsString()
   password: string;
   
+  @IsOptional()
   @IsEnum(Role)
   role: Role;
 }
@@ -54,15 +55,19 @@ export class UpdateUserDto {
   @IsPositive()
   id: number;
   
+  @IsOptional()
   @IsString()
   name: string;
   
+  @IsOptional()
   @IsEmail()
   email: string;
   
+  @IsOptional()
   @IsString()
   password: string;
   
+  @IsOptional()
   @IsEnum(Role)
   role: Role;
 }
