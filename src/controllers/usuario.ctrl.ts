@@ -1,3 +1,4 @@
+// src/controllers/usuario.ctrl.ts
 import { Request, Response } from "express";
 import {
   deleteUsuario,
@@ -9,6 +10,7 @@ import {
 
 /**
  * REGULAR: Registro de un nuevo usuario.
+ * Se espera que req.body tenga { name, email, password, role }.
  */
 export const registerCtrl = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -27,17 +29,15 @@ export const registerCtrl = async (req: Request, res: Response): Promise<void> =
 
 /**
  * REGULAR: Actualización de datos del usuario logueado.
- * Se asume que el middleware ValidateSession añade req.body.userId con el id del usuario autenticado.
+ * Se asume que ValidateSession añade req.body.userId.
  */
 export const updateSelfCtrl = async (req: Request, res: Response): Promise<void> => {
   try {
     const tokenUserId = req.body.userId;
-    // Si se enviara un id en el body, éste debe coincidir con el del token.
     if (req.body.id && req.body.id !== tokenUserId) {
       res.status(403).json({ msg: "No puede actualizar otros usuarios", exito: false });
       return;
     }
-    // Forzamos el id a ser el del usuario autenticado.
     req.body.id = tokenUserId;
     const response = await updateUsuario(req.body);
     if (response === "NO_EXISTE") {

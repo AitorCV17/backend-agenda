@@ -4,16 +4,16 @@ const JWT_SECRET = process.env.JWT_SECRET || "Tokenprueba";
 /**
  * Función para generar un token con tiempo limitado (2 horas).
  */
-export const generateTokenLimitTime = async (email: string, nombres: string, id: number) => {
-    const jwt = await sign({ id, email, nombres, limit: "LIMIT" }, JWT_SECRET, { expiresIn: "2h" });
+export const generateTokenLimitTime = async (email: string, name: string, id: number) => {
+    const jwt = await sign({ id, email, name, limit: "LIMIT" }, JWT_SECRET, { expiresIn: "2h" });
     return jwt;
 };
 
 /**
  * Función para generar un token sin límite de tiempo (o con otra configuración).
  */
-export const generateTokenUnlimitTime = async (email: string, nombres: string, id: number) => {
-    const jwt = await sign({ id, email, nombres, limit: "UNLIMIT" }, JWT_SECRET);
+export const generateTokenUnlimitTime = async (email: string, name: string, id: number) => {
+    const jwt = await sign({ id, email, name, limit: "UNLIMIT" }, JWT_SECRET);
     return jwt;
 };
 

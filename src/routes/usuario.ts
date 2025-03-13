@@ -1,3 +1,4 @@
+// src/routes/usuario.ts
 import { Router } from "express";
 import { 
   registerCtrl, 
@@ -20,11 +21,12 @@ import { ValidateSession } from "../middlewares/sesion.md";
 
 const router = Router();
 
-// Rutas públicas para usuarios normales (REGULAR)
+// Registro público: se puede usar directamente o vía DTO
+router.post("/", registerCtrl);
 router.post("/register", validateBodyDto(RegisterUserDto), registerCtrl);
 router.put("/update", ValidateSession, validateBodyDto(UpdateSelfUserDto), updateSelfCtrl);
 
-// Rutas protegidas para ADMIN (solo ADMIN puede listar, consultar, actualizar y eliminar cualquier usuario)
+// Rutas para ADMIN
 router.get("/list", rolRequired(Role.ADMIN), adminGetListUsuarioCtrl);
 router.get("/only/:id", rolRequired(Role.ADMIN), validateParamsDto(GetUserDto), adminGetUsuarioCtrl);
 router.put("/admin-update", rolRequired(Role.ADMIN), validateBodyDto(UpdateUserDto), adminUpdateUsuarioCtrl);

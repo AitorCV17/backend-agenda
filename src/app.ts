@@ -1,8 +1,9 @@
+// src/app.ts
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
-import { router } from "./routes";
 import "reflect-metadata";
+import { router } from "./routes";
 
 const PORT = process.env.PORT || 3020;
 const app = express();

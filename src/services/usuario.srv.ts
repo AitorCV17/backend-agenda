@@ -1,12 +1,8 @@
-import { PrismaClient, User } from "@prisma/client";
-import { encrypt } from "../utils/bcrypt.handle";
+// src/services/usuario.srv.ts
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
+import { encrypt } from "../utils/bcrypt.handle";
 
-/**
- * Función para registrar un nuevo usuario.
- * Verifica que no exista otro usuario con el mismo email.
- * Si no se envía el rol, se asigna "REGULAR" por defecto.
- */
 export const registerUsuario = async ({ email, password, name, role }: any) => {
   const checkIs = await prisma.user.findFirst({ where: { email } });
   if (checkIs?.email) return "ALREADY EXIST";
@@ -28,9 +24,6 @@ export const registerUsuario = async ({ email, password, name, role }: any) => {
   return response;
 };
 
-/**
- * Función para actualizar un usuario.
- */
 export const updateUsuario = async ({ id, name, email, password, role }: any) => {
   const checkIs = await prisma.user.findFirst({ where: { id } });
   if (!checkIs) return "NO_EXISTE";
@@ -46,25 +39,14 @@ export const updateUsuario = async ({ id, name, email, password, role }: any) =>
   return response;
 };
 
-/**
- * Función para obtener la lista de usuarios.
- */
 export const getListUsuario = async () => {
   return await prisma.user.findMany();
 };
 
-/**
- * Función para obtener un usuario por su id.
- */
 export const getUsuario = async (id: number) => {
-  const usuario = await prisma.user.findFirst({ where: { id } });
-  return usuario;
+  return await prisma.user.findFirst({ where: { id } });
 };
 
-/**
- * Función para eliminar un usuario por su id.
- */
 export const deleteUsuario = async (id: number) => {
-  const response = await prisma.user.delete({ where: { id } });
-  return response;
+  return await prisma.user.delete({ where: { id } });
 };
