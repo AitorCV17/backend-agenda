@@ -7,6 +7,7 @@ export const createEventValidation = (req: Request, res: Response, next: NextFun
     description: Joi.string().optional(),
     startTime: Joi.date().required(),
     endTime: Joi.date().required(),
+    location: Joi.string().optional(),  // Nuevo campo
     userId: Joi.number().required()
   });
   const { error } = schema.validate(req.body);
@@ -24,6 +25,7 @@ export const updateEventValidation = (req: Request, res: Response, next: NextFun
     description: Joi.string().optional(),
     startTime: Joi.date().optional(),
     endTime: Joi.date().optional(),
+    location: Joi.string().optional(),  // Nuevo campo
     userId: Joi.number().required()
   });
   const { error } = schema.validate(req.body);

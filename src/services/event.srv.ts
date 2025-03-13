@@ -6,6 +6,7 @@ export const createEvent = async (data: {
   description?: string;
   startTime: string;
   endTime: string;
+  location?: string;  // Nuevo campo
   userId: number;
 }): Promise<Event | { error: string }> => {
   if (!data.title) return { error: "El título es obligatorio" };
@@ -16,6 +17,7 @@ export const createEvent = async (data: {
       description: data.description,
       startTime: new Date(data.startTime),
       endTime: new Date(data.endTime),
+      location: data.location,   // Se asigna la ubicación (puede ser undefined)
       user: { connect: { id: data.userId } }
     }
   });
@@ -40,6 +42,7 @@ export const updateEvent = async (data: {
   description?: string;
   startTime?: string;
   endTime?: string;
+  location?: string;   // Nuevo campo
   userId: number;
 }): Promise<Event | { error: string }> => {
   const existing = await prisma.event.findFirst({
@@ -55,7 +58,9 @@ export const updateEvent = async (data: {
       title: data.title,
       description: data.description,
       startTime: data.startTime ? new Date(data.startTime) : existing.startTime,
-      endTime: data.endTime ? new Date(data.endTime) : existing.endTime
+      endTime: data.endTime ? new Date(data.endTime) : existing.endTime,
+      // Si se envía "location", se actualiza; de lo contrario se mantiene el valor existente.
+      location: data.location !== undefined ? data.location : existing.location
     }
   });
 };

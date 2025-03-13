@@ -14,6 +14,10 @@ export class CreateEventDto {
   @IsDateString()
   endTime: string;
 
+  @IsOptional()           // Nuevo campo opcional
+  @IsString()
+  location?: string;
+
   @IsNumber()
   userId: number;
 }
@@ -37,6 +41,10 @@ export class UpdateEventDto {
   @IsOptional()
   @IsDateString()
   endTime?: string;
+
+  @IsOptional()           // Nuevo campo opcional
+  @IsString()
+  location?: string;
 
   @IsNumber()
   userId: number;
