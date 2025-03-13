@@ -1,4 +1,4 @@
-import { IsEmail, IsEnum, IsNumber, IsPositive, IsString } from "class-validator";
+import { IsEmail, IsEnum, IsNumber, IsPositive, IsString, IsOptional } from "class-validator";
 
 export enum Role {
   REGULAR = "REGULAR",
@@ -20,14 +20,17 @@ export class RegisterUserDto {
 // DTO para que el usuario actualice sus propios datos.
 // Se usará el id obtenido del token (por ello, no se envía en el body).
 export class UpdateSelfUserDto {
+  @IsOptional()
   @IsString()
-  name: string;
-  
+  name?: string;
+
+  @IsOptional()
   @IsEmail()
-  email: string;
-  
+  email?: string;
+
+  @IsOptional()
   @IsString()
-  password: string;
+  password?: string;
 }
 
 // DTO para que el admin cree un usuario

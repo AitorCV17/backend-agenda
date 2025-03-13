@@ -21,15 +21,16 @@ import { ValidateSession } from "../middlewares/sesion.md";
 
 const router = Router();
 
-// Registro público: se puede usar directamente o vía DTO
-router.post("/", registerCtrl);
-router.post("/register", validateBodyDto(RegisterUserDto), registerCtrl);
-router.put("/update", ValidateSession, validateBodyDto(UpdateSelfUserDto), updateSelfCtrl);
+// Registro público
+router.post("/", validateBodyDto(RegisterUserDto), registerCtrl);
+
+// Actualización de datos del usuario autenticado
+router.put("/", ValidateSession, validateBodyDto(UpdateSelfUserDto), updateSelfCtrl);
 
 // Rutas para ADMIN
-router.get("/list", rolRequired(Role.ADMIN), adminGetListUsuarioCtrl);
-router.get("/only/:id", rolRequired(Role.ADMIN), validateParamsDto(GetUserDto), adminGetUsuarioCtrl);
-router.put("/admin-update", rolRequired(Role.ADMIN), validateBodyDto(UpdateUserDto), adminUpdateUsuarioCtrl);
+router.get("/", rolRequired(Role.ADMIN), adminGetListUsuarioCtrl);
+router.get("/:id", rolRequired(Role.ADMIN), validateParamsDto(GetUserDto), adminGetUsuarioCtrl);
+router.put("/:id", rolRequired(Role.ADMIN), validateBodyDto(UpdateUserDto), adminUpdateUsuarioCtrl);
 router.delete("/:id", rolRequired(Role.ADMIN), validateParamsDto(GetUserDto), adminDeleteUsuarioCtrl);
 
 export { router };

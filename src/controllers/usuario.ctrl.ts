@@ -34,21 +34,28 @@ export const registerCtrl = async (req: Request, res: Response): Promise<void> =
 export const updateSelfCtrl = async (req: Request, res: Response): Promise<void> => {
   try {
     const tokenUserId = req.body.userId;
+    
     if (req.body.id && req.body.id !== tokenUserId) {
       res.status(403).json({ msg: "No puede actualizar otros usuarios", exito: false });
       return;
     }
-    req.body.id = tokenUserId;
-    const response = await updateUsuario(req.body);
+
+    // Construir objeto de actualización solo con los campos proporcionados
+    const updateData: any = { id: tokenUserId };
+    if (req.body.name) updateData.name = req.body.name;
+    if (req.body.email) updateData.email = req.body.email;
+    if (req.body.password) updateData.password = req.body.password;
+
+    const response = await updateUsuario(updateData);
+
     if (response === "NO_EXISTE") {
       res.status(404).json({ msg: "El usuario no existe", exito: false });
       return;
     }
+
     res.status(200).json({ msg: "Usuario actualizado correctamente", datos: response, exito: true });
-    return;
   } catch (error) {
     res.status(500).json({ msg: "Error al actualizar el usuario: " + error, exito: false });
-    return;
   }
 };
 

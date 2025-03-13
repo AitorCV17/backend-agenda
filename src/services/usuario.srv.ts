@@ -27,14 +27,16 @@ export const registerUsuario = async ({ email, password, name, role }: any) => {
 export const updateUsuario = async ({ id, name, email, password, role }: any) => {
   const checkIs = await prisma.user.findFirst({ where: { id } });
   if (!checkIs) return "NO_EXISTE";
+  
+  // Condicionamos la actualización de la contraseña
+  const dataToUpdate: any = { name, email, role };
+  if (password) {
+    dataToUpdate.password = await encrypt(password);
+  }
+  
   const response = await prisma.user.update({
     where: { id },
-    data: {
-      name,
-      email,
-      password: await encrypt(password),
-      role,
-    },
+    data: dataToUpdate,
   });
   return response;
 };
